@@ -16,5 +16,26 @@ cPickle -> pickle
   
 ### Problem: Line 131, provider.py  
 pickle error : UnicodeDecoderError  
-#### soloution:
+#### soloution:  
+It is addresesd in issue #55 in master branch  
+adding encoding='latin1' to some of pickle.load   
+  
+### Problem: Tensorflow missing some libraries such as libnvinfcr.so.6  
+#### solution  
+pip uninstall tensorflow-gpu  
+conda install tnsorflow  
+
+### Problem:  model_util.py line 175 , module 'tensorflow' has no attribute 'placeholder'   
+#### solution  
+import tensorflow.compat.v1 as tf   
+tf.disable_v2_behavior()  
+Or uninstall tensorflow v2 and instal tensorflow v1 !  
+both solutions have problem:  
+first: AttributeError: module 'tensorflow_core.compat.v1' has no attribute 'contrib'  
+second: many warnings  
+keras.initializers.glorot_normal() instead of tf.contrib.layer.initializer.xavier  
+
+
+
+
 
