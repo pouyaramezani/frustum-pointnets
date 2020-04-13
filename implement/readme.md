@@ -34,6 +34,11 @@ both solutions have problem:
 first: AttributeError: module 'tensorflow_core.compat.v1' has no attribute 'contrib'  
 second: many warnings  
 keras.initializers.glorot_normal() instead of tf.contrib.layer.initializer.xavier  
+  
+### Problem: ./models/tf_utils.py line 529 tf.contrib.layers.batch_norm 
+#### solution  
+using tf.compat.v1.layers.batch_normalization(  
+
 
 
 
