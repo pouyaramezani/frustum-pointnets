@@ -39,6 +39,19 @@ keras.initializers.glorot_normal() instead of tf.contrib.layer.initializer.xavie
 #### solution  
 using tf.compat.v1.layers.batch_normalization(  
 
+### Problem: ./train/log_v1/model.ckpt does not exist  
+#### Solution: I should first train the model to produce check points  
+  
+### Problem: Line 140, provider.py  
+pickle error : UnicodeDecoderError  
+#### soloution:  
+It is addresesd in issue #55 in master branch. adding encoding='latin1' to some of pickle.load   
+  
+### Problem: line 230 train. integer dividing for python 2 is / (depricated)   
+#### solution num_batches = len(TRAIN_DATASET)//BATCH_SIZE  
+  
+
+
 
 
 
