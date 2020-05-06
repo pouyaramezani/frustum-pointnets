@@ -131,9 +131,11 @@ def show_image_with_boxes(img, objects, calib, show3d=True):
             (int(obj.xmax),int(obj.ymax)), (0,255,0), 2)
         box3d_pts_2d, box3d_pts_3d = utils.compute_box_3d(obj, calib.P)
         img2 = utils.draw_projected_box3d(img2, box3d_pts_2d)
-    Image.fromarray(img1).show()
+#    Image.fromarray(img1).show()
+    #Image.fromarray(img1).save('2dbb.png')
     if show3d:
         Image.fromarray(img2).show()
+        Image.fromarray(img2).save('3dbb.png')
 
 def get_lidar_in_image_fov(pc_velo, calib, xmin, ymin, xmax, ymax,
                            return_more=False, clip_distance=2.0):
@@ -197,6 +199,7 @@ def show_lidar_on_image(pc_velo, img, calib, img_width, img_height):
             int(np.round(imgfov_pts_2d[i,1]))),
             2, color=tuple(color), thickness=-1)
     Image.fromarray(img).show() 
+    Image.fromarray(img).save('pointOnimage.png')
     return img
 
 def dataset_viz():

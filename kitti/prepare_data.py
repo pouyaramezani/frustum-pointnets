@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'mayavi'))
 import kitti_util as utils
-import cPickle as pickle
+import pickle as pickle
 from kitti_object import *
 import argparse
 
@@ -41,11 +41,12 @@ def extract_pc_in_box2d(pc, box2d):
     box2d_roi_inds = in_hull(pc[:,0:2], box2d_corners)
     return pc[box2d_roi_inds,:], box2d_roi_inds
      
-def demo():
+def demo(data_idx=0):
     import mayavi.mlab as mlab
     from viz_util import draw_lidar, draw_lidar_simple, draw_gt_boxes3d
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
-    data_idx = 0
+    #dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset\\KITTI\\object'))
+    data_idx = data_idx
 
     # Load data from dataset
     objects = dataset.get_label_objects(data_idx)
@@ -70,14 +71,14 @@ def demo():
 
     # Show all LiDAR points. Draw 3d box in LiDAR point cloud
     print(' -------- LiDAR points and 3D boxes in velodyne coordinate --------')
-    #show_lidar_with_boxes(pc_velo, objects, calib)
-    #raw_input()
+    show_lidar_with_boxes(pc_velo, objects, calib)
+    raw_input()
     show_lidar_with_boxes(pc_velo, objects, calib, True, img_width, img_height)
     raw_input()
 
     # Visualize LiDAR points on images
     print(' -------- LiDAR points projected to image plane --------')
-    show_lidar_on_image(pc_velo, img, calib, img_width, img_height) 
+#    show_lidar_on_image(pc_velo, img, calib, img_width, img_height) 
     raw_input()
     
     # Show LiDAR points that are in the 3d box
@@ -87,11 +88,11 @@ def demo():
     box3droi_pc_velo, _ = extract_pc_in_box3d(pc_velo, box3d_pts_3d_velo)
     print(('Number of points in 3d box: ', box3droi_pc_velo.shape[0]))
 
-    fig = mlab.figure(figure=None, bgcolor=(0,0,0),
-        fgcolor=None, engine=None, size=(1000, 500))
+    """ fig = mlab.figure(figure=None, bgcolor=(0,0,0),
+       fgcolor=None, engine=None, size=(1000, 500))
     draw_lidar(box3droi_pc_velo, fig=fig)
     draw_gt_boxes3d([box3d_pts_3d_velo], fig=fig)
-    mlab.show(1)
+    mlab.show(1) """
     raw_input()
     
     # UVDepth Image and its backprojection to point clouds
@@ -110,9 +111,9 @@ def demo():
     print(imgfov_pc_velo[0:20])
     print(backprojected_pc_velo[0:20])
 
-    fig = mlab.figure(figure=None, bgcolor=(0,0,0),
+    """ fig = mlab.figure(figure=None, bgcolor=(0,0,0),
         fgcolor=None, engine=None, size=(1000, 500))
-    draw_lidar(backprojected_pc_velo, fig=fig)
+    draw_lidar(backprojected_pc_velo, fig=fig) """
     raw_input()
 
     # Only display those points that fall into 2d box
@@ -123,10 +124,10 @@ def demo():
         get_lidar_in_image_fov(pc_velo, calib, xmin, ymin, xmax, ymax)
     print(('2d box FOV point num: ', boxfov_pc_velo.shape[0]))
 
-    fig = mlab.figure(figure=None, bgcolor=(0,0,0),
+    """ fig = mlab.figure(figure=None, bgcolor=(0,0,0),
         fgcolor=None, engine=None, size=(1000, 500))
     draw_lidar(boxfov_pc_velo, fig=fig)
-    mlab.show(1)
+    mlab.show(1) """
     raw_input()
 
 def random_shift_box2d(box2d, shift_ratio=0.1):
@@ -464,6 +465,7 @@ def write_2d_rgb_detection(det_filename, split, result_dir):
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--demo', action='store_true', help='Run demo.')
+    parser.add_argument('--index',type=int,default=0,help='The number of the image in kitti dataset') #PR
     parser.add_argument('--gen_train', action='store_true', help='Generate train split frustum data with perturbed GT 2D boxes')
     parser.add_argument('--gen_val', action='store_true', help='Generate val split frustum data with GT 2D boxes')
     parser.add_argument('--gen_val_rgb_detection', action='store_true', help='Generate val split frustum data with RGB detection 2D boxes')
@@ -471,7 +473,7 @@ if __name__=='__main__':
     args = parser.parse_args()
 
     if args.demo:
-        demo()
+        demo(data_idx=args.index)
         exit()
 
     if args.car_only:
